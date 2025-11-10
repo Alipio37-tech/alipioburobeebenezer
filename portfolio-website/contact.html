@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Contact</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Page-scoped styles to create a modern stacked/overlapping contact layout */
+        :root{
+            --bg:#0f1315;
+            --card:#181a1c;
+            --muted:#a6a9ad;
+            --accent:#ff2d6d;
+            --glass: rgba(255,255,255,0.03);
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        }
+
+        /* center everything and adjust name/email spacing */
+        html,body{height:100%;margin:0;background:var(--bg);color:#fff}
+        header{
+            padding:18px 28px;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            gap:8px;
+        }
+        header h1{font-size:18px;margin:0;font-weight:600;text-align:center}
+        header nav ul{display:flex;gap:18px;list-style:none;padding:0;margin:0}
+        header a{color:var(--muted);text-decoration:none;font-size:14px}
+
+        main{max-width:1100px;margin:24px auto;padding:0 20px;text-align:center}
+
+        .hero{
+            background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+            border-radius:12px;
+            padding:24px;
+            display:flex;
+            gap:18px;
+            align-items:center;
+            justify-content:center;
+            flex-direction:column; /* center contents vertically stacked */
+            position:relative;
+        }
+        .hero .intro{flex:none}
+        .hero h2{margin:0 0 8px 0;font-size:26px}
+        .hero p{margin:0;color:var(--muted);line-height:1.5}
+
+        /* stacked cards container */
+        .stack {
+            margin-top:32px;
+            display:flex;
+            align-items:flex-start; /* Changed from center to flex-start */
+            justify-content:center;
+            position:relative;
+            min-height:460px; /* allow lift while keeping info visible below */
+            padding:60px 0 10px;
+            gap:24px; /* Add gap between cards */
+            flex-direction:row; /* Ensure horizontal layout */
+        }
+
+        .card {
+            width:540px;
+            max-width:92%;
+            border-radius:14px;
+            background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+            box-shadow: 0 12px 40px rgba(0,0,0,0.7);
+            padding:26px;
+            color:#fff;
+            backdrop-filter: blur(6px);
+            position:relative;
+            transition:transform .28s ease, box-shadow .28s ease;
+            margin:0 auto;
+            text-align:left; /* keep internal text left aligned for readability */
+        }
+
+        /* background info card placed lower and centered */
+        .card--info{
+            position:relative; /* Changed from absolute */
+            transform:rotate(-0.6deg);
+            width:420px; /* Slightly smaller than form */
+            max-width:42%;
+            opacity:0.98;
+            border:1px solid rgba(255,255,255,0.02);
+            text-align:center; /* center content for the info card */
+            margin-top:40px; /* Add some top margin to align with form */
+        }
+
+        /* foreground form card lifted and centered */
+        .card--form{
+            position:relative;
+            z-index:3;
+            width:560px;
+            max-width:52%;
+            border:1px solid rgba(255,255,255,0.03);
+            transform:none; /* Remove previous transform */
+            left:auto; /* Remove previous left positioning */
+            margin:0; /* Reset margin */
+            display:block;
+            text-align:left; /* form fields remain left-aligned */
+        }
+
+        /* slight stronger hover/focus elevation */
+        .card--form:focus-within,
+        .card--form:hover {
+            box-shadow:0 26px 60px rgba(0,0,0,0.7);
+            transform: translateY(-10px); /* Simpler upward hover motion */
+        }
+
+        .meta{color:var(--muted);font-size:14px;margin-bottom:12px}
+        .contact-list{display:flex;flex-direction:column;gap:12px;align-items:center}
+        .contact-item{display:flex;gap:12px;align-items:center;color:var(--muted)}
+        .contact-item b{color:#fff;font-weight:600}
+
+        form{display:grid;gap:12px}
+        label.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+        input, textarea{
+            width:100%;
+            padding:12px 14px;
+            border-radius:10px;
+            border:1px solid rgba(255,255,255,0.03);
+            background:var(--glass);
+            color:#fff;
+            outline:none;
+            font-size:14px;
+            resize:vertical;
+            transition:box-shadow .18s ease, border-color .18s ease;
+        }
+        input:focus, textarea:focus{ box-shadow:0 6px 18px rgba(0,0,0,0.5); border-color: rgba(255,255,255,0.06) }
+
+        /* reduce width of inputs (email, subject, message) and set column ratio for name/email */
+        .card--form form input,
+        .card--form form textarea {
+            max-width: 520px;      /* cap width so inputs don't span full card */
+            width: 100%;
+        }
+
+        /* make name/email row have a smaller email field */
+        .row{display:flex;gap:20px;align-items:stretch}
+        .row .col{flex:1 1 auto}
+        .row .col:first-child{flex:0 0 58%}  /* name wider */
+        .row .col:last-child{flex:0 0 42%}   /* email narrower */
+
+        /* subject and message should be a little narrower than the card */
+        #subject { max-width: 520px; }
+        #message { max-width: 520px; min-height: 140px; }
+
+        /* keep mobile responsive: let inputs expand on small screens */
+        @media (max-width:980px){
+            .row{flex-direction:column;gap:12px}
+            .row .col{flex:1 1 auto}
+            .card--form form input,
+            .card--form form textarea {
+                max-width: 100%;
+            }
+            #message { min-height:120px; }
+        }
+
+        /* avatar: round and slightly larger */
+        .avatar-container{
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: linear-gradient(180deg,#0e1112,#111315);
+            border: 2px solid rgba(255,255,255,0.06);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            margin: 12px auto 0;
+            display: inline-block;
+        }
+        .avatar-container img{
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            display:block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Portfolio</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" aria-label="contact hero">
+            <div class="intro">
+                <h2>Let's build something great together</h2>
+                <p>I'm available for freelance projects and full-time roles. Share a few details about your project and I'll get back within 24 hours.</p>
+                <p class="meta">Prefer email? <a href="mailto:alipioburobeebenezer@gmail.com" style="color:var(--accent);text-decoration:none">alipioburobeebenezer@gmail.com</a> — Follow me on social for updates.</p>
+            </div>
+            <div class="avatar-container" aria-hidden="false">
+                <img alt="avatar" src="assets/img/IMG_8296.JPG">
+            </div>
+        </section>
+
+        <div class="stack" aria-hidden="false">
+            <!-- background info card (behind) -->
+            <aside class="card card--info" aria-hidden="false">
+                <div class="meta">Contact Information</div>
+                <div class="contact-list">
+                    <div class="contact-item">
+                        <span style="width:34px;height:34px;background:rgba(255,255,255,0.03);display:inline-flex;align-items:center;justify-content:center;border-radius:8px">📍</span>
+                        <div><b>Location</b><div style="color:var(--muted)">Wa, Upper West Region</div></div>
+                    </div>
+
+                    <div class="contact-item">
+                        <span style="width:34px;height:34px;background:rgba(255,255,255,0.03);display:inline-flex;align-items:center;justify-content:center;border-radius:8px">✉️</span>
+                        <div><b>Email</b><div style="color:var(--muted)"><a href="mailto:alipioburobeebenezer@gmail.com" style="color:var(--muted);text-decoration:none">alipioburobeebenezer@gmail.com</a></div></div>
+                    </div>
+
+                    <div class="contact-item">
+                        <span style="width:34px;height:34px;background:rgba(255,255,255,0.03);display:inline-flex;align-items:center;justify-content:center;border-radius:8px">🔗</span>
+                        <div>
+                            <b>Links</b>
+                            <div style="color:var(--muted);display:flex;gap:12px">
+                                <a href="https://www.pinterest.com/ALIPIO_37/" target="_blank" style="color:var(--muted);text-decoration:none;transition:color 0.2s ease">Pinterest</a>
+                                •
+                                <a href="https://github.com/Alipio37-tech" target="_blank" style="color:var(--muted);text-decoration:none;transition:color 0.2s ease">GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="height:14px"></div>
+                <div class="meta">Office hours</div>
+                <div style="color:var(--muted)">24/7</div>
+            </aside>
+
+            <!-- foreground form card (on top) -->
+            <section class="card card--form" role="form" aria-label="contact form" tabindex="-1">
+                <div class="meta">Send a message</div>
+                <form id="contactForm" action="#" method="post" onsubmit="handleSubmit(event)" novalidate>
+                    <label for="name" class="sr-only">Name</label>
+                    <label for="email" class="sr-only">Email</label>
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" id="name" name="name" placeholder="Your name" required aria-required="true" />
+                        </div>
+                        <div class="col">
+                            <input type="email" id="email" name="email" placeholder="Your email" required aria-required="true" />
+                        </div>
+                    </div>
+
+                    <label for="subject" class="sr-only">Subject</label>
+                    <input type="text" id="subject" name="subject" placeholder="Subject (optional)">
+
+                    <label for="message" class="sr-only">Message</label>
+                    <textarea id="message" name="message" rows="6" placeholder="Tell me about your project..." required aria-required="true"></textarea>
+
+                    <div style="display:flex;gap:12px;align-items:center;justify-content:space-between">
+                        <div style="color:var(--muted);font-size:13px">I aim to reply within 24 hours</div>
+                        <button type="submit" id="submitBtn">Send message</button>
+                    </div>
+                    <div id="formFeedback" role="status" aria-live="polite" style="margin-top:10px;color:var(--muted);font-size:13px;display:none"></div>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Alipio Burobe Ebenezer. All rights reserved.</p>
+    </footer>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script>
+        function showToast(message, timeout = 3000) {
+            const t = document.getElementById('toast');
+            t.textContent = message;
+            t.style.display = 'block';
+            clearTimeout(t._timer);
+            t._timer = setTimeout(()=> {
+                t.style.display = 'none';
+            }, timeout);
+        }
+
+        function validateFormData(form) {
+            const name = form.name.value.trim();
+            const email = form.email.value.trim();
+            const message = form.message.value.trim();
+            if (!name) return 'Please enter your name.';
+            if (!email || !/^\S+@\S+\.\S+$/.test(email)) return 'Please enter a valid email.';
+            if (!message) return 'Please enter a message.';
+            return '';
+        }
+
+        // New: open user's mail client with prefilled email to alipioburobeebenezer@gmail.com
+        async function handleSubmit(e){
+            e.preventDefault();
+            const form = e.target;
+            const feedback = document.getElementById('formFeedback');
+            const btn = document.getElementById('submitBtn');
+
+            feedback.style.display = 'none';
+            const validationError = validateFormData(form);
+            if (validationError) {
+                feedback.textContent = validationError;
+                feedback.style.color = '#ff9aa2';
+                feedback.style.display = 'block';
+                return;
+            }
+
+            // gather values
+            const name = form.name.value.trim();
+            const senderEmail = form.email.value.trim();
+            const subject = (form.subject.value || `Message from ${name}`).trim();
+            const message = form.message.value.trim();
+
+            // compose mailto link (encode)
+            const to = 'alipioburobeebenezer@gmail.com';
+            const bodyLines = [
+                `Name: ${name}`,
+                `Email: ${senderEmail}`,
+                '',
+                message
+            ];
+            const mailto = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
+
+            // UX: disable button briefly and open mail client
+            btn.disabled = true;
+            const prevText = btn.textContent;
+            btn.textContent = 'Opening mail…';
+
+            // open mail client
+            try {
+                window.location.href = mailto; // opens default mail client
+                showToast('Opening your mail client to send the message.');
+                feedback.textContent = 'Your mail client should open now. Complete and send the email to finish.';
+                feedback.style.color = '#8ef3c5';
+                feedback.style.display = 'block';
+            } catch (err) {
+                feedback.textContent = 'Could not open mail client. Please email alipioburobeebenezer@gmail.com directly.';
+                feedback.style.color = '#ff9aa2';
+                feedback.style.display = 'block';
+            } finally {
+                // re-enable button after a short delay
+                setTimeout(()=> {
+                    btn.disabled = false;
+                    btn.textContent = prevText;
+                    form.reset();
+                }, 1200);
+            }
+        }
+    </script>
+</body></body>
+</html>

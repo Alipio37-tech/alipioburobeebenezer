@@ -1,0 +1,38 @@
+.hero {
+    background-image: url('../assets/images/hero-bg.jpg'); /* Replace with your hero image path */
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin: 0;
+}
+
+.hero p {
+    font-size: 1.5rem;
+    margin: 10px 0;
+}
+
+.hero .cta-button {
+    background-color: #ff5733; /* Change to your desired button color */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.hero .cta-button:hover {
+    background-color: #c70039; /* Change to your desired hover color */
+}

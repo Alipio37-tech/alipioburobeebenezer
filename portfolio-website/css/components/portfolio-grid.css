@@ -1,0 +1,50 @@
+/portfolio-website/portfolio-website/css/components/portfolio-grid.css
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.portfolio-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+.portfolio-item:hover {
+    transform: scale(1.05);
+}
+
+.portfolio-item img {
+    width: 100%;
+    height: auto;
+}
+
+.portfolio-item h3 {
+    font-size: 1.5em;
+    margin: 10px;
+}
+
+.portfolio-item p {
+    font-size: 1em;
+    margin: 10px;
+    color: #666;
+}
+
+.portfolio-item a {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 0 0 8px 8px;
+}
+
+.portfolio-item a:hover {
+    background-color: #0056b3;
+}

@@ -1,0 +1,436 @@
+:root{
+    --bg: #0f1315;        /* contact page background color */
+    --card: #181a1c;
+    --muted: #a6a9ad;
+    --accent: #ff2d6d;
+    --glass: rgba(255,255,255,0.03);
+    --text: #e6e6e6;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* apply contact page background site-wide */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    font-family: var(--font-family, Inter), Arial, sans-serif;
+}
+
+/* unify header/footer to match contact look */
+header {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    color: var(--text);
+    padding: 14px 0;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.02);
+    backdrop-filter: blur(4px);
+}
+
+nav {
+    margin: 0;
+    padding: 0;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: inline-flex;
+    gap: 18px;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+}
+
+footer {
+    background: linear-gradient(0deg, rgba(255,255,255,0.02), transparent);
+    color: var(--muted);
+    text-align: center;
+    padding: 14px 0;
+    margin-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.02);
+}
+
+/* keep existing layout rules but ensure cards use site card color */
+.card,
+.hero,
+.portfolio,
+.services {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+}
+
+/* Update card and form styles */
+.card--form {
+    width: 680px;          /* increased width */
+    max-width: 92%;
+    padding: 32px;         /* increased padding */
+    min-height: 500px;     /* ensure minimum height */
+}
+
+/* Stack form inputs vertically */
+.row {
+    display: flex;
+    flex-direction: column;  /* change to column layout */
+    gap: 16px;              /* space between stacked inputs */
+    width: 100%;
+    max-width: 600px;       /* limit maximum width of inputs */
+    margin: 0 auto;
+}
+
+.row .col {
+    flex: 1;
+    width: 100%;            /* full width for each input */
+}
+
+/* Remove the previous column ratios */
+.row .col:first-child,
+.row .col:last-child {
+    flex: 1;
+}
+
+/* Adjust input sizing */
+.card--form form input,
+.card--form form textarea {
+    width: 100%;
+    max-width: 100%;        /* allow inputs to fill container */
+    padding: 14px 16px;     /* slightly larger padding */
+}
+
+#subject {
+    margin-top: 8px;        /* space after name/email */
+}
+
+#message {
+    margin-top: 8px;        /* space after subject */
+    min-height: 160px;      /* taller message box */
+}
+
+/* Adjust button section */
+form > div:last-of-type {
+    margin-top: 16px;       /* space before button section */
+}
+.hero {
+  background: url('../assets/images/hero-bg.jpg') no-repeat center center/cover;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-align: center;
+  padding: 48px 0 28px;
+  position: relative;
+  overflow: visible;
+}
+
+.hero .hero-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* big title left */
+.hero-title {
+  font-size: 64px;
+  line-height: 0.95;
+  margin: 0;
+  color: var(--text);
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.hero-title .outline {
+  -webkit-text-stroke: 2px rgba(255,255,255,0.06);
+  color: transparent;
+  display: inline-block;
+}
+
+/* hero figure (portrait) on right — circular crop optional */
+.hero-figure {
+  width: 420px;
+  height: 420px;
+  min-width: 320px;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.03));
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+/* use the user's image as full-cover inside the hero rectangle */
+.hero-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* smaller container variants used below */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+/* Intro / stats styling */
+.intro { padding: 56px 20px; text-align: left; color: var(--text); }
+.intro small { color: var(--muted); display:block; margin-bottom:8px; }
+.intro h2 { font-size: 36px; margin: 6px 0 12px; }
+.intro .lead { color: var(--muted); max-width: 720px; }
+.stats { list-style:none; display:flex; gap:28px; margin-top:18px; padding:0; }
+.stats li { color:var(--muted); }
+
+/* Featured project */
+.featured { padding: 48px 20px; text-align: left; }
+.project-card { display:flex; gap:20px; background:var(--card); padding:18px; border-radius:12px; align-items:center; }
+
+/* Added margin-bottom to project-card class */
+.project-card {
+    margin-bottom: 32px;  /* Adds space between stacked project cards */
+}
+
+/* Remove margin from last project card to maintain consistent spacing */
+.project-card:last-child {
+    margin-bottom: 0;
+}
+
+.project-card img { width:240px; height:150px; object-fit:cover; border-radius:8px; }
+.project-body h4 { margin:0 0 8px; }
+.project-body p { margin:0; color:var(--muted); }
+
+/* Header/nav tweaks */
+.site-header .container { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:18px 20px; }
+.brand { font-weight:700; font-size:18px; color:var(--text); }
+.main-nav ul { display:flex; gap:18px; margin:0; padding:0; list-style:none; }
+.btn-cv { background:#111; color:#fff; padding:8px 12px; border-radius:6px; text-decoration:none; }
+
+/* Footer */
+.site-footer { padding:28px 20px; text-align:center; color:var(--muted); }
+
+/* Project links styles */
+.project-links {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.github-link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.github-link:hover {
+    color: var(--text);
+    background: rgba(255,255,255,0.06);
+}
+
+/* About page specific styles */
+.about-page {
+    padding: 60px 0;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 60px;
+    align-items: start;
+}
+
+.about-image {
+    position: relative;
+    text-align: center;
+}
+
+.about-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+}
+
+.download-cv {
+    display: inline-block;
+    padding: 12px 24px;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: transform 0.2s ease;
+}
+
+.download-cv:hover {
+    transform: translateY(-2px);
+}
+
+.about-content h1 {
+    font-size: 42px;
+    margin: 0 0 20px;
+    color: var(--text);
+}
+
+.about-content p {
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 40px;
+}
+
+/* Skills section */
+.skills-section {
+    margin: 40px 0;
+}
+
+.skills-section h2 {
+    font-size: 28px;
+    margin: 0 0 24px;
+    color: var(--text);
+}
+
+.skills-grid {
+    display: grid;
+    gap: 20px;
+}
+
+.skill-item {
+    display: grid;
+    gap: 8px;
+}
+
+.skill-icon {
+    color: var(--text);
+    font-weight: 500;
+}
+
+.skill-bar {
+    height: 10px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.skill-level {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 0.6s ease;
+}
+
+/* skill color rules (match each skill to a color) */
+.skill-item.html .skill-level { background: #FF6B6B; }    /* HTML - red */
+.skill-item.css  .skill-level { background: #4E9EF8; }    /* CSS - blue */
+.skill-item.js   .skill-level { background: #FFD166; }    /* JS - yellow */
+.skill-item.node .skill-level { background: #2ECC71; }    /* Node - green */
+.skill-item.react .skill-level { background: #61DAFB; }   /* React - cyan */
+.skill-item.uiux .skill-level { background: #FF71CE; }    /* UI/UX - pink */
+.skill-item.graphic .skill-level { background: #B967FF; } /* Graphic - purple */
+.skill-item.python .skill-level { background: #3776AB; }  /* Python - python-blue */
+
+/* Education timeline */
+.education-section {
+    margin-top: 60px;
+}
+
+.education-section h2 {
+    font-size: 28px;
+    margin: 0 0 24px;
+    color: var(--text);
+}
+
+.timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 0;
+    width: 2px;
+    background: rgba(255,255,255,0.1);
+}
+
+.timeline-item {
+    position: relative;
+    padding-bottom: 30px;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: -34px;
+    top: 8px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+}
+
+.timeline-content h3 {
+    color: var(--accent);
+    font-size: 18px;
+    margin: 0 0 8px;
+}
+
+.timeline-content h4 {
+    color: var(--text);
+    font-size: 16px;
+    margin: 0 0 4px;
+}
+
+.timeline-content p {
+    color: var(--muted);
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 980px) {
+  .hero .hero-inner { flex-direction: column-reverse; align-items:center; text-align:center; }
+  .hero-figure { width: 320px; height:320px; min-width: auto; }
+  .hero-title { font-size: 36px; }
+  .stats { flex-direction:column; gap:10px; }
+  .project-card { flex-direction:column; align-items:stretch; }
+  .project-card img { width:100%; height:220px; }
+    .about-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .about-image {
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Added hover effect for contact links */
+.contact-item a:hover {
+    color: var(--accent) !important;
+}
